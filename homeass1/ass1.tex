@@ -1,0 +1,24 @@
+\section{Assignment 1}
+The source for assignment 1 can be found in listing \ref{lst:ass1}. Note that
+$s3$ had to be used instead of $s0$ on line 29 as different results occurred on
+different machines. Cause is unknown.
+s\lstinputlisting[caption={Source for
+assignment 1},label={lst:ass1}]{source/ass1.s}
+
+\section{Assignment 2}
+"Typing" in numbers with the button we can add numbers:
+\begin{align}
+0x01 (1) + 0x01 (1) &\rightarrow 0x02 (2)\label{eq:per1}\\
+0x01 (1) + 0xFF (-1) &\rightarrow 0x00 (0)\label{eq:per2}\\
+0x01 (1) + 0x7F (127) &\rightarrow 0x80 (-128)\label{eq:per3}\\
+0xFF (-1) + 0x80 (-128) &\rightarrow 0x7F (127)\label{eq:per4}
+\end{align}
+Points of interest are:
+\begin{itemize}
+\item
+\eqref{eq:per2} where we add $0xFF$ and $0x01$ we have to note, that due to the use of $lb$ we are loading a signed byte and $0xFF$ will be $-128$ and not $255$.
+\item
+\eqref{eq:per3} When the sum of the two operands is greater than $127$ we will experience overflow, and
+\item
+\eqref{eq:per3} When the sum of the two operands is smaller than $-128$ we will experience overflow.
+\end{itemize}
