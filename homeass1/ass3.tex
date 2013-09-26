@@ -1,6 +1,8 @@
 \section{Assignment 3}
 We will investigate the nature of simple arithmetics on a 32-bit \emph{MIPS}
 processor. The operations we will look at are: \emph{addu, subu, add, sub}.
+
+\subsection{\emph{addu}, \emph{subu}}
 Starting with \emph{addu} and \emph{subu} we perform the following operations
 \ref{optable}
 
@@ -26,6 +28,14 @@ as signed\\\hline
 \label{optable}
 \end{table}
 We note that overflow occurs differently for diffrerent representations of both
-input and output. The source is given in listing \ref{lst:ass3}
-\lstinputlisting[caption={Source for assignment 3},
+input and output - it depends on the programmers choice of representation, the
+computer doesn't care - .
+The source is given in listing \ref{lst:ass3} \lstinputlisting[caption={Source for assignment 3},
 label={lst:ass3}]{source/ass3.s}
+
+\subsection{\emph{add}, \emph{sub}}
+These operations are supposed to generate a warning, a so-called \emph{trap} on
+overflow. However I (we) can not figure out how this is expressed in the
+\emph{MIPS}-simulator. An interrupt is supposed to be generated, saving the
+processor state and \emph{PC} for backtracing the problem and possibly
+recovering.
