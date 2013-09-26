@@ -1,0 +1,31 @@
+\section{Assignment 3}
+We will investigate the nature of simple arithmetics on a 32-bit \emph{MIPS}
+processor. The operations we will look at are: \emph{addu, subu, add, sub}.
+Starting with \emph{addu} and \emph{subu} we perform the following operations
+\ref{optable}
+
+ \begin{table}[ht]
+\centering
+\begin{tabular}{c c c c c c c c}
+first arg. & as unsigned & as signed &  & second arg. / result & as unsigned &
+as signed\\\hline
+0x00000001 & 1 & 1 & + & 0x00000001 & 1 & 1\\
+&  &  & = & 0x00000002 & 2 & 2\\ \hline
+0x00000001 & 1 & 1 & + & 0x7FFFFFFF & 2147483647 & 2147483647\\
+&  &  & = & 0x80000000 & 2147483648 & -2147483648\\\hline
+0x00000001 & 1 & 1 & + & 0xFFFFFFFE & 4294967295 & -1\\
+&  &  & = & 0x00000000 & 0 & 0\\\hline
+0x00000002 & 2 & 2 & - & 0x00000001 & 1 & 1\\
+&  &  & = & 0x00000001 & 1 & 1\\\hline
+0x00000000 & 0 & 0 & - & 0x00000001 & 1 & 1\\
+&  &  & = & 0xFFFFFFFF & 4294967295 & -1\\\hline
+0x80000000 & 2147483648 & -2147483648 & - & 0x00000001 & 1 & 1\\
+&  &  & = & 0x7FFFFFFF & 2147483647 & 2147483647\\\hline
+\end{tabular}
+\caption{Table of some 32-bit arithmetic operations}
+\label{optable}
+\end{table}
+We note that overflow occurs differently for diffrerent representations of both
+input and output. The source is given in listing \ref{lst:ass3}
+\lstinputlisting[caption={Source for assignment 3},
+label={lst:ass3}]{source/ass3.s}

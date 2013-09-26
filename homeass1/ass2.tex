@@ -6,12 +6,8 @@
 0x01 (1) + 0x7F (127) &\rightarrow 0x80 (-128)\label{eq:per3}\\
 0xFF (-1) + 0x80 (-128) &\rightarrow 0x7F (127)\label{eq:per4}
 \end{align}
-Points of interest are:
-\begin{itemize}
-\item
-\eqref{eq:per2} where we add $0xFF$ and $0x01$ we have to note, that due to the use of $lb$ we are loading a signed byte and $0xFF$ will be $-128$ and not $255$.
-\item
-\eqref{eq:per3} When the sum of the two operands is greater than $127$ we will experience overflow, and
-\item
-\eqref{eq:per3} When the sum of the two operands is smaller than $-128$ we will experience overflow.
-\end{itemize}
+Note that when using \emph{lb} a set msb indicates a negative number so $0x01 +
+0xFF$ gives $0$ and not $0x100$. But with the 8-bit ouput we can't tell the
+difference anyway.
+
+
