@@ -5,9 +5,12 @@ Busy-waiting polling is waiting for a bit to be set, reset or first one, then
 the other.
 
 \subsection{How does the computer know whether a number is signed or unsigned?}
-It does not. That's the beauti of it. It is up the programmer to keep track of
-number representation. Some languages makes this easier, by doing some of the
-work for the programmer - or warning him, if he might be mixing representations.
+The computer does not differentiate between signed and unsinged numbers. This is
+the result of using 2's complement for negative numbers. Addision and
+subtraction can be peformed with the same algorithms for signed and unsigned
+numbers. Thus there is no need for the computer to differentiate between signed
+and unsigned numbers. It is up the programmer to keep track of number representation.
+Some languages makes this easier, by doing some of the work for the programmer - or warning him, if he might be mixing representations.
 
 \subsection{What is an overflow?}
 When an operation is performed on one or more numbers and the result exeeds that
