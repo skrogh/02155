@@ -1,0 +1,17 @@
+\section{Conclusion}
+
+\subsection{What is polling?}
+Busy-waiting polling is waiting for a bit to be set, reset or first one, then
+the other.
+
+\subsection{How does the computer know whether a number is signed or unsigned?}
+It does not. That's the beauti of it. It is up the programmer to keep track of
+number representation. Some languages makes this easier, by doing some of the
+work for the programmer - or warning him, if he might be mixing representations.
+
+\subsection{What is an overflow?}
+When an operation is performed on one or more numbers and the result exeeds that
+of which is possible to contain within the given representation of the resulting
+number an overflow can (in special cases eg. with saturating math this is not
+the case) result in an overflow, where the result - so to speak - \emph{loops
+back}.
