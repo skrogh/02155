@@ -1,0 +1,6 @@
+\section{Assignment 8 }
+The modified code can be seen in the listing below. It is mostly the same with the only minor change being the
+destination register of the addu operation, which has been changed to \$a1 such that the printf function can use it.
+Furthermore a nullterminated ascii string is included in the data segment of the program and the address of this string
+is loaded into the \$a0 register for use by printf.
+\lstinputlisting[caption=Modified code from home assignment 1]{source/ass8.s}
