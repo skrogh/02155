@@ -1,5 +1,3 @@
-# Laboratory Exercise 3, Home Assignment 1
-# Written by Jan Eric Larsson , 27 October 1998
 # include <iregdef.h>
 .set noreorder
 .text

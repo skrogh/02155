@@ -1,0 +1,11 @@
+\section{Assignment 10 }
+If the CPU keeps executing instructions after the last line of code has been executed it simply
+executes whatever lies after the program in memory. If the program is uploaded to the mips simulator
+nothing happens as the memory is filled with nop operations. 
+
+If the .data directives are removed from the code, it still executes as intended and produces the sum
+of 5 and 7 in register \$s0. This is only because the instructions with binary codes 5 and 7 do nothing.
+If the ".word 7" segment in the code was changed to ".word 8", the program would jump to the address 0x00!
+Thus we can, as expected, see that the cpu executes whatever instruction the PC is pointing to. And that the
+.data directive causes the assembler to place the following code segment in an area of memory which the PC
+should not point to under normal operation.

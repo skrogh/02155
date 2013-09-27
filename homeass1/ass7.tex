@@ -1,0 +1,13 @@
+\section{Assignment 7}
+The program prints "hello, world" to the console and places the cursor at the beginning of a new line.
+The different escape sequences given have the following functions as ascii codes
+\begin{itemize}
+\item \(\backslash\)t is the tab character with ascii code 0x09
+\item \(\backslash\)n is the newline character which places the cursor on a newline, it has ascii code 0x0A
+\item \(\backslash\)b is the backspace character, it deletes the previous character and moves the cursor back one character. It has
+ascii code 0x08
+\item \(\backslash\)" is the doublequote escape character with ascii code 0x22. This is not a control sequence as double quotes are 
+a printable character, but the C compiler translates double quotes as string markers.
+\item \(\backslash\)r is the carriage return control sequence, it's function is to return the cursor to the beginning of the 
+current line, in mipsIt however, it does nothing. It has ascii code 0x0D.
+\end{itemize}

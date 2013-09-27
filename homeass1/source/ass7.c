@@ -5,5 +5,5 @@
 */
 main ()
 {
-	printf ( " \n \t \b \r hello, world\. \n" );
+	printf ( "\t  he\nllo,  w\ror\bld\" \n" );
 }
