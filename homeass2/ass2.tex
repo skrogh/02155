@@ -1,0 +1,29 @@
+\section{Assigment 2}
+\subsection{Question 2.1}
+The pipeline hazard associated with branches is called a control hazard.
+\subsection{Question 2.2}
+When the processor determines whether to branch or not in the second stage of the pipeline, a single instruction will always be
+executed after the branch instruction.
+\subsection{Question 2.3}
+If the machine only has a single memory for both instructions and data, any instruction that tries to access memory will prevent
+the fetch stage from being able to fetch the next instruction. Thus causing a structural hazard.
+
+\subsection{Question 2.4}
+\lstinputlisting[caption=code with use after load hazards marked., label=2-4]{source/ass2-4.s}
+Since an instruction that uses a loaded value must be executed at least 1 clockcycle after the load instruction, the code has
+2 use after load hazards as seen in the listing above.
+
+\subsection{Question 2.5}
+Inserting a single nop instruction after every use after load instruction in listing \ref{2-4} increases the number of instructions
+in the loop body (excluding the beq and last nop instructions) to 10.
+\subsection{Question 2.6}
+The loop will repeat if the value in register \$t5 is zero. \$t5 is set in the previous instruction if the value in \$t4 is less
+than the value in \$s0. Since this is always true \$t5 will be set to 1 on the first pass through the loop. However, since the
+branch is determined in the ID stage, \$t5 has not yet bet set and a data hazard occurs, causing the branch to be taken in the
+first pass through the loop. Thus the loop executes twice, bringing the total number of instructions (including nops to avoid
+load-use data hazards) is 27.
+\subsection{Question 2.7}
+By moving all the load instructions to the top of the loop and placing any one of the addu instructions in the branch delay
+slot removes the need for nop operations. The modified code is seen in the listing below
+\lstinputlisting[caption=modified code without nops., label=2-7]{source/ass2-7.s}
+Removing the 3 nop operations in the loop reduces the number of instructions executed to 21
