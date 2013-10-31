@@ -1,0 +1,83 @@
+\section{Assigment 1}
+\subsection{Question 1.1}
+\begin{description}
+\item[ADD]
+	\begin{description}
+	\item[IF]
+	 Instruction is fetched and put into IF/ID registers.
+	 PC+4 is put into IF registers and - since no branching operations were before this one is loaded baxck into the PC. The path for the PC is thus not important any more.
+	\item[ID]
+	 BADDECAF is loaded from $09 (09) and stored in ID/EX registe.rs.
+	 B01DFACE is loaded from $10 (0a) and stored in ID/EX regs
+	 Last 4 bytes of instruction is signextended.
+	 Writeback register adress $08 (08) is passed on to ID/EX regs (though not shown in MIPSPipe).
+	\item[EX]
+	 BADDECAF and B01DFACE is added giving 6AFBE77D (sorry not a word)
+	 Writeback register adress $08 (08) is passed on to EX/MEM regs (though not shown in MIPSPipe).
+	\item[MEM]
+	 Nothing stored to memory.
+	 6AFBE77D passed on to MEM/WB regs.
+	 Writeback register adress $08 (08) is passed on to MEM/WB regs (though not shown in MIPSPipe)
+	\item[WB]
+	 6AFBE77D is written into the register $08 (08). 
+	\end{description}	
+\item[LW]
+	\begin{description}
+	\item[IF]
+	 Instruction is fetched and put into IF/ID registers.
+	 PC+4 is put into IF registers and - since no branching operations were before this one is loaded baxck into the PC. The path 	for the PC is thus not important any more.
+	\item[ID]
+	 The address 8001fff0 is loaded from $09 (09) and stored in ID/EX regs.
+	 The offset (0) is signextended and passed on to the ID/EX regs.
+	 Writeback register adress $08 (08) is passed on to ID/EX regs (though not shown in MIPSPipe).
+	\item[EX]
+	 Offset and address is added and the final address is stored in the EX/MEM regs.
+	 Writeback register adress $08 (08) is passed on to EX /MEM regs (though not shown in MIPSPipe).
+	\item[MEM]
+	 0BA11E70 is loaded from ram address 8001fff0 and stored in MEM/WB
+	 Writeback register adress $08 (08) is passed on to MEM/WB regs (though not shown in MIPSPipe).
+	\item[WB]
+	 0BA11E70 is written to reg $08
+	\end{description}
+\item[SW]
+	\begin{description}
+	\item[IF]
+	 Instruction is fetched and put into IF/ID registers.
+	 PC+4 is put into IF registers and - since no branching operations were before this one is loaded baxck into the PC. The path for the PC is thus not important any more.
+	\item[ID]
+	 The address 8001fff0 is loaded from $09 (09) and stored in ID/EX regs.
+	 The data 0DEBA7E is loaded from $08 (08) and stored in ID/EX regs.
+	 The offset (4) is signextended and passed on to the ID/EX regs.
+	\item[EX]
+	 Offset and address is added and the final address is stored in the EX/MEM regs.
+	 Data is passed on to EX/MEM regs.
+	\item[MEM]
+	 0DEBA7E0 is  stored to ram address 8001fff4
+	\item[WB]
+	 No write back.
+	\end{description}
+\item[BEQ]
+	\begin{description}
+	\item[IF]
+	 Instruction is fetched and put into IF/ID registers.
+	 PC+4 is put into IF/ID registers.
+	\item[ID]
+	 The values in $01 and $02, both 00000000 are loaded into the ID/EX regs.
+	 The relative jump (5) is sign extended and loaded into the ID/EX regs.
+	 PC+4 (PC at call time) is passed on to ID/EX regs.
+	\item[EX]
+	 Relative jump is multiplied by 4 and added to PC+4 (PC at call time) then stored in EX/MEM regs.
+	 00000000 and 00000000 are compared, as they are equal a 1 is passed to the EX/MEM regs. 
+	\item[MEM]
+	 PC is set to PC at calltime + 4 + relative jump*4.
+	\item[WB]
+	 no write back.
+	\end{description}
+\end{description}
+
+\subsection{Question 1.2}
+ For operations with write back 5, for SW that value is in the ram after 4 cycles.
+
+\subsection{Question 1.3}
+ ADD does not use the memory stage (BEQ doesn't use the ram, but does something here)
+ SW and BEQ does not use the WB stage.
