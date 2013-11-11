@@ -1,0 +1,40 @@
+\section{Assigment 3}
+\subsection{Question 3.1}
+With a delay of $55ns$ this gives the multiplication block an execution time of $6$ clock cycles. The timing diagram for the example code is given in  table: \ref{tab:time1}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l | c | c | c | c | c | c | c | c}
+MULT & IF  & ID  & EX1 & EX2 & EX3 & EX4 & EX5 & EX6\\
+MFLO &     & IF  & ID  & EX  & \emph{MEM} & WB && 
+\end{tabular}
+\caption{Pipeline timing diagram for example code. Data hazard indicaded in
+\emph{itallic}}
+\label{tab:time1}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{l | c | c | c | c | c | c | c | c | c | c |}
+MULT	& IF  & ID  & EX1 & EX2 & EX3 & EX4 & EX5 & EX6 && \\
+NOP	                                       & & IF  & ID  & EX  & MEM & WB &&&&\\ 
+NOP	                                 &&& IF  & ID  & EX  & MEM & WB &&&\\ 
+NOP &&&& IF  & ID  & EX  & MEM & WB &&\\
+NOP	         &&&&& IF  & ID  & EX  & MEM & WB &\\
+MFLO	                              &&&&&& IF  & ID  & EX  & MEM & WB  
+\end{tabular}
+\caption{Pipeline timing diagram with added \emph{NOP}s, assuming a delay of more than $5ns$ for the multiplexer}
+\label{tab:time2}
+\end{table}
+\begin{table}[H]
+\centering
+\begin{tabular}{l | c | c | c | c | c | c | c | c | c |}
+MULT	& IF  & ID  & EX1 & EX2 & EX3 & EX4 & EX5 & EX6 &\\
+NOP	                                       & & IF  & ID  & EX  & MEM & WB &&&\\ 
+NOP	                                 &&       & IF  & ID  & EX  & MEM & WB &&\\
+NOP                  &&&       & IF  & ID  & EX  & MEM & WB&\\
+MFLO	                             &&&&          & IF  & ID  & EX  & MEM & WB \\
+\end{tabular}
+\caption{Pipeline timing diagram with added \emph{NOP}s, assuming a delay of less than $5ns$ for the multiplexer}
+\label{tab:time3}
+\end{table}
