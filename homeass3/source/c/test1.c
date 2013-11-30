@@ -15,7 +15,6 @@ int main() {
 		A[ i ] = 1;
 	}
 
-
 	//Data referencing
 	for ( i = 0; i < TAB_SIZE - CACHE_SIZE; i++ ) {
 		for ( j = 0; j < 5; j++ ) {
