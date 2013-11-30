@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #include "records.h"
-void quicksort( int a, int l, int r ) {
+void quicksort( int a[], int l, int r ) {
 	int v, i, j, t;
 	if ( r > l ) {
 		v = a[ r ];
@@ -11,6 +11,7 @@ void quicksort( int a, int l, int r ) {
 		for ( ;; ) {
 			while ( a[ ++i ] < v );
 			while ( a[ --j ] > v );
+			if ( i >= j ) break;
 			t = a[ i ];
 			a[ i ] = a[ j ];
 			a[ j ] = t;
