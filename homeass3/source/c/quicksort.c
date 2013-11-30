@@ -11,6 +11,7 @@ void quicksort( int a, int l, int r ) {
 		for ( ;; ) {
 			while ( a[ ++i ] < v );
 			while ( a[ --j ] > v );
+			if ( i >= j ) break;
 			t = a[ i ];
 			a[ i ] = a[ j ];
 			a[ j ] = t;
