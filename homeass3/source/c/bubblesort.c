@@ -6,14 +6,14 @@
 #define RECORD_LENGTH 7
 
 void bubblesort( int a[][ RECORD_LENGTH ], int N ) {
-	int i,j,t[ RECORD_LENGTH ], ti;
+	int i,j,t, ti;
 	for( i = N-1; i >= 1; i--) {			//BUG, should be N-1
 		for( j = 1; j <= i; j++ ) {		//BUG, should be j=1
 			if ( a[ j - 1 ][ 0 ] > a[ j ][ 0 ] ) {
 				for ( ti = 0; ti < RECORD_LENGTH; ti++ ) {
-					t[ ti ] = a[ j - 1 ][ ti ];
+					t = a[ j - 1 ][ ti ];
 					a[ j - 1 ][ ti ] = a[ j ][ ti ];
-					a[ j ][ ti ] = t[ ti ];
+					a[ j ][ ti ] = t;
 				}
 			}
 		}
@@ -22,15 +22,8 @@ void bubblesort( int a[][ RECORD_LENGTH ], int N ) {
 
 
 int main() {
-	int i = 0;
+	clear_cache();
 	bubblesort( records, ARRAY_LENGTH );
-
-	
-	for (i = 0; i < ARRAY_LENGTH; i++ ) {
-		printf( "%d,", records[ i ][ 0 ] );
-	}
-
-	printf( "\n" );
-
+	promexit();
 	return 0;
 }
