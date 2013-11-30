@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "records.h"
 
 #define ARRAY_LENGTH 10
 
