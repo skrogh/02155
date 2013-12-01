@@ -5,10 +5,10 @@
 
 int main() {
 	int A[ TAB_SIZE ];
-	int sum, i, j;
+	register int sum, i, j;
 	
-	
-	clear_cache();	
+	promexit(); //pause, we don't want to wait for the initial init of the processor
+	clear_cache();	//get ready for benchmark
 	//Initialization
 	sum = 0;
 	for ( i = 0; i < TAB_SIZE; i++ ) {
