@@ -5,14 +5,16 @@
 
 int main() {
 	int A[ TAB_SIZE ];
-	int sum, i, j;
-
+	register int sum, i, j;
+	
+	promexit(); //pause, we don't want to wait for the initial init of the processor
+	clear_cache();	//get ready for benchmark
 	//Initialization
 	sum = 0;
 	for ( i = 0; i < TAB_SIZE; i++ ) {
 		A[ i ] = 1;
 	}
-	
+
 	//Data referencing
 	for ( i = 0; i < TAB_SIZE - CACHE_SIZE; i++ ) {
 		for ( j = 0; j < 5; j++ ) {
@@ -21,6 +23,8 @@ int main() {
 		}
 	}
 	
+	promexit();
+
 	printf( "Sum = %d\n", sum );
 	return 0;
 }

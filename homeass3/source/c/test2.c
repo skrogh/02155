@@ -5,8 +5,11 @@
 
 int main() {
 	int A[ TAB_SIZE ];
-	int sum, i, j;
-
+	register int sum, i, j;
+	
+	promexit();
+	clear_cache();
+	
 	//Initialization
 	sum = 0;
 	for ( i = 0; i < TAB_SIZE; i++ ) {
@@ -25,6 +28,8 @@ int main() {
 			sum += A[ i ];
 		}
 	}
+	
+	promexit();
 
 	printf( "Sum = %d\n", sum );
 	return 0;

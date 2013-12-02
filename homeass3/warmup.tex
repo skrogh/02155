@@ -1,0 +1,158 @@
+\section{Warm up}
+\emph{test1.c} and \emph{test2.c} are two programs written to illustrate data
+access and cache use. They both sum an array of $2048$ elements filled with ones
+twice, with one of the summing runs ofsetted by the size of the cache. This is repeaded six
+times. In both cases the result is $19200$.
+
+\emph{test1.c} sums the elements like this:
+\begin{lstlisting}
+for ( j = 0; j < 5; j++ ) {
+	sum += A[ i ];
+	sum += A[ i + CACHE\_SIZE ];
+}
+\end{lstlisting}
+ensuring that, atleast for a direct-mapped cache each access to the elements in
+array $A$ is trashing the cache.
+
+\emph{test2.c} sums first the lower half of the array (from $i=0$ to
+$i=TAB_SIZE-CACHE\_SIZE-1$) six times, then the upper (from $i=CACHE\_SIZE$ to
+$i=TAB_SIZE-1$).
+
+\subsection{Initial remarks}
+For all tests the instruction cache penalty has been turned off, so that this
+does not affect test results.
+
+In both \emph{test1.c} and \emph{test2.c} the \emph{promexit()} and
+\emph{clear\_cache()} functions are put right after \emph{int main()}. This
+ensures that the initialization of the processor (setting up stack and stuff we
+don't have controll over) doesn't affect the profiling.
+
+To test the program we run \emph{test.c} it with a cache size of $128$ words
+arranged in blocks of $4$ on $32$ lines.
+
+Running with a directmapped cache we expect the program to cache-trash all over
+the place, and thus we expect a rather low hit rate. In the initalization we hit
+on $\frac{3}{4}$ and miss on $\frac{1}{4}$ of the writes to $A$ - while during
+the main data manipulation loop we miss on all accesses to $A$. Since this is
+roughly 12 times as many misses - a hit rate in the area of $8\%$ is expected. 
+
+Running the program, however, we get a hit rate of $84\%$! This requires an
+explanation.
+\subsubsection{Decompiling} and getting the assembler code, we can examine what
+the compiler has done. In listing \ref{lst:test1ass} we have commented relevant
+lines in the assembler code and noted which data accesses that are most likley
+to be cache hits and misses:
+\lstinputlisting[label={lst:test1ass}]{source/asm/test1.s}
+It is clear that the ``problem'' is that $i$, $j$ and $sum$ are being read and
+written to memory far more often than we access $A$.
+Estimating the hit rate from the assembler code we get:
+
+\begin{itemize}
+  \item Hits:
+  \begin{itemize}
+    \item Initalization: For each loop, $i$ is accessed once for checking if the
+    loop should continue, once to get the address of $A[i]$ and twice (r/w) for
+    appending $i$.
+    Due to the blocksize of 4, the write to $A[i]$ will be a hit
+    $\frac{3}{4}$ of the time.
+    \item Main data loop: $i$, $j$ and $sum$ are accessed $6\cdot 8 + 3$ times
+    for each loop
+  \end{itemize}
+  \item Misses:
+  \begin{itemize}
+    \item Initalization: Due to the blocksize of 4, the write to $A[i]$ will be
+    a miss $\frac{1}{4}$ of the time.
+    \item Main data loop; $A[i]$ and $A[i + CACHE\_SIZE]$ will be misses and are
+    accessed $6\cdot 2$ times for each loop.
+  \end{itemize}
+  \item hit rate can now be calculated as $\frac{\mbox{total
+  hits}}{\mbox{total hits}+\mbox{total misses}}$ where $\mbox{total hits} =
+  (4+3/4\cdot2048 + (6\cdot8+3)\cdot(2048-128))$ and $\mbox{total misses} =
+  (1/4\cdot2048 + (6\cdot2)\cdot(2048-128))$. This gives a hit rate of $82\%$,
+  not far from the actual hit rate.
+\end{itemize}
+\subsubsection{A note on \emph{mips.exe}} in the $D-cache$ window of mipset we
+can get the actual total hits, misses, hit rate and execution clocks. These are, and
+this is not a mistype, \emph{mips.exe} acually gives this data (our guess is
+that mips forgot some zeroes, we have added those to the numbers in ``()''):
+\begin{itemize}
+  \item Hit count: $10516$ ($105160$)
+  \item Miss count: $20282$ ($20282$)
+  \item Hit rate: $0.84$ ($0.84$)
+  \item Cycle count: $19205$ ($1920520$, from the data cache statistics)
+\end{itemize}
+this tells us that the total hitcount form the \emph{D-cache} window is not
+reliable and cycle count should be taken from the data cache statistics window.
+
+\subsubsection{Solution} digging arround on \emph{Stack Overflow} it turns out
+the keyword \emph{register} tell the compiler to - if possible - store a variable in
+registers. This keyword is put in front of $i$, $j$ and $sum$ as this makes it
+possible to show the intended impact of different levels of associativity. With
+the keyword in place we can now run \emph{test1.c} and \emph{test2.c} and give
+meaningfull explanations to why the hit rate is affected as it is. Furthermore
+as optimization level will be increased to $2$ for the sorting algorithms - this
+will make the compiler use registers for variables for the rest of the
+assignment too.
+
+\subsection{Test results for test1 and test2 with varying level of
+associativity}
+\emph{test1.c} and \emph{test2.c} are run with and without the register keyword
+and with associativity 1, 2, 4 and 8. We note for both tests without the
+register keyword that their hit rate is extremly high - while the cycle count is
+the higest too. This is because the general use of memory operations is
+significantly lager too.
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{c | c | c | c |}
+    Test	&	Blocks in set	&	Cycle count	&	Hit rate	\\ \hline
+    Test1 vars not in regs
+    		&	1				&	1920520		&	84\%		\\ \hline
+    Test2 vars not in regs
+    		&	1				&	1364463		&	98\%		\\ \hline \hline
+    %
+    Test1	&	1				&	1264021		&	9\%			\\ \hline
+    Test1	&	2				&	367073		&	91\%		\\ \hline
+    Test1	&	4				&	343569		&	93\%		\\ \hline
+    Test1	&	8				&	339045		&	93\%		\\ \hline \hline
+    %
+    Test2	&	1				&	398520		&	93\%		\\ \hline
+    Test2	&	2				&	398520		&	93\%		\\ \hline
+    Test2	&	4				&	398520		&	93\%		\\ \hline
+    Test2	&	8				&	398520		&	93\%		\\ \hline 
+  \end{tabular}
+  \caption{Test results for test1 and test2}
+  \label{tab:test}
+\end{table}
+
+\subsubsection{Conclution based on data in figure \ref{tab:test}, test1}
+For test1 we get a low hit rate (and slow execution time) for the directmapped
+cache we have a hit rate of $9\%$. We, however, gain a good speedup, when using
+a two-way associative cache - this allows both $A[i]$ and $A[i + CACHE\_SIZE]$
+to be kept in cache. Inceasing the associativity from here doesn't really do
+much, we already hit on $\frac{10}{12}$ memory accesses. We gain a bit from
+reusing the $x + CACHE\_SIZE$'th element when $i = x + CACHE\_SIZE$ so that an
+ealier cached $A[x + CACHE\_SIZE] = A[i]$.
+
+\subsubsection{Conclution based on data in figure \ref{tab:test}, test2}
+Increasing the associativity for test2 has litte to no influence. Test2 performs
+well for a directmapped cache, compared to test1 - as we are not accessing
+elements that are spaced by the $CACHE\_SIZE$ directly after eachother. For
+higher levels of associativity we gain no increased performance - this is
+because the chance of element $A[i]$ to still be in the cache, when it is needed
+for the second run throug the array is insignificantly small (for a two-way
+associative cache elemet $A[i]$ has a chance of still being in the cache, when
+it has to be used again is $\frac{1}{2}^\frac{1920}{64}$).
+
+Since test2 has to run through the loop twice, for a cache with associativity
+over $1$ test1 is actually faster in these cases.
+
+%
+% SKAL DET HER MED?
+%
+% We can conclude that more ways of assiciativity has a greater possitive impact
+% on execution time, when we acces data elemens further than the cache size
+% away, multiple times (eg. $A[i]$ and $A[i + CACHE\_SIZE] subsequently, but
+% this would be true for multiple elemens a cache size or more away too$)
+%
+
