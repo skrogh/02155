@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 #include "records.h"
 
 #define RECORD_LENGTH 7

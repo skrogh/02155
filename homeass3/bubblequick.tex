@@ -63,7 +63,7 @@ was kept constant at 512 words.
 					unbounded coords = jump,
 					colormap={pos}{color(0cm)=(white); color(6cm)=(orange)}
 				]
-				\addplot3[surf,mark=none, shader=flat, draw=mapped color!80!black] file {source/python/bubblesort};
+				\addplot3[surf,mark=none, shader=flat, draw=mapped color!80!black] file {source/python/bubblesort.dat};
 
 			\end{loglogaxis}
 		\end{tikzpicture}
@@ -71,5 +71,74 @@ was kept constant at 512 words.
 	\caption{Test results for bubblesort with a cache size of 512 words.}
 	\label{fig:bubbleResults}
 \end{figure}
+The test results can be seen in figure (~\ref{fig:bubbleResults}).
 
+From the results we can see that the maximum blocksize for a directmapped cache, before execution time starts rising again, is 
+16 words. This is just as expected, as the record size the algorithm is working on contains records of size 7.
+Thus there is a high probability that a swap sequence will have all the elements to be swapped already in cache,
+because the preceding compare action already brought them in.
 
+\subsection{Quicksort}
+The quicksort algorithm given in the exercise manual does not contain any bugs, but needs to be modified to handle records instead
+of single integers. The modified algorithm is shown below.
+\lstinputlisting[language=C,label=quicksort1list, caption=Quicksort test program]{source/c/quicksort.c}
+For quicksort we do not expect the same dependency on cache parameters as for bubblesort. This is due to quicksort not taking
+having the same spatial locality as bubblesort, since quicksort compares elements on opposite sides of a certain point. 
+The recording sorting quicksort will however benefit from increased block size as less cache misses will occur when swapping if
+more elements of a single record are brought into cache when attempting to access the record key for comparison. Associativity is
+not expected to greatly affect the execution time unless the block size is large. This is again due to the loading/eviction of 
+unnecessary elements.
+
+\subsubsection{Quicksort test}
+Quicksort was tested for the same cache parameters as bubblesort. The results can be seen in figure (~\ref{fig:quickResults}).
+\begin{figure}[H]
+	\flushleft
+	\begin{minipage}[c]{0.4\textwidth}
+		\scalebox{0.5}{
+			\begin{tabular}{c | r | r | r }
+				Block size / words & Blocks per set & hit \% & Execution time / ns \\ \hline
+				 1& 1& 74&   3431095 \\ \hline
+				 1& 2& 74&	 3451395 \\ \hline
+				 1& 4& 73&   3478195 \\ \hline
+				 2& 1& 84&   2075397 \\ \hline
+				 2& 2& 84&   2077737 \\ \hline
+				 2& 4& 94&   2090477 \\ \hline
+				 4& 1& 88&   1361177 \\ \hline
+				 4& 2& 89&   1354573 \\ \hline
+				 4& 4& 88&   1358421 \\ \hline
+				 8& 1& 92&   1004953 \\ \hline
+				 8& 2& 92&    994313 \\ \hline
+				 8& 4& 92&    997337 \\ \hline
+				 16&1& 95&    752365 \\ \hline
+				 16&2& 96&    709037 \\ \hline
+				 16&4& 96&    708525 \\ \hline
+				 32&1& 96&    753393 \\ \hline
+				 32&2& 98&    623945 \\ \hline
+				 32&4& 98&    622065 \\ \hline
+				 64&1& 95&    937653 \\ \hline
+				 64&2& 99&    545204 \\ \hline
+				 64&4& 99&    537269 \\ \hline
+		\end{tabular} }
+	\end{minipage}
+	\begin{minipage}[c]{0.4\textwidth}
+		\begin{tikzpicture}
+			\begin{loglogaxis}[log basis x=2, log basis y=2, xlabel=Block size / words, ylabel=Blocks per set, zlabel=execution time / ns,
+					xtick={1,2,4,8,16,32,64},
+					ytick={1,2,4},
+					view = {120}{35},% important to draw x,y in increasing order
+					xmin = 0,
+					ymin = 0,
+					xmax = 128,
+					ymax = 8,
+					zmin = 0,
+					unbounded coords = jump,
+					colormap={pos}{color(0cm)=(white); color(6cm)=(orange)}
+				]
+				\addplot3[surf,mark=none, shader=flat, draw=mapped color!80!black] file {source/python/quicksort.dat};
+
+			\end{loglogaxis}
+		\end{tikzpicture}
+	\end{minipage}
+	\caption{Test results for quicksort with a cache size of 512 words.}
+	\label{fig:quickResults}
+\end{figure}
