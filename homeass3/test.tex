@@ -1,0 +1,42 @@
+\begin{figure}
+	\center
+	\begin{tikzpicture}
+		\begin{loglogaxis}[log basis x=2, log basis y=2, xlabel=Block size / words, ylabel=Blocks per set, zlabel=execution time / ns,
+		xtick={1,2,4,8,16,32,64},
+		ytick={1,2,4},
+		view = {120}{35},% important to draw x,y in increasing order
+		xmin = 0,
+		ymin = 0,
+		xmax = 128,
+		ymax = 8,
+		zmin = 0,
+		unbounded coords = jump,
+		colormap={pos}{color(0cm)=(white); color(6cm)=(orange)}
+		]
+		\addplot3[surf,mark=none, shader=flat, draw=mapped color!80!black] file {source/python/bubblesort};
+		
+		\end{loglogaxis}
+	\end{tikzpicture}
+	\caption{Bubblesort execution time with a 512 word cache, as a function of block size and associativity}
+\end{figure}
+\begin{figure}
+	\center
+	\begin{tikzpicture}
+		\begin{loglogaxis}[log basis x=2, log basis y=2, xlabel=Block size / words, ylabel=Blocks per set, zlabel=execution time / ns,
+		xtick={1,2,4,8,16,32,64},
+		ytick={1,2,4},
+		view = {120}{35},% important to draw x,y in increasing order
+		xmin = 0,
+		ymin = 0,
+		xmax = 128,
+		ymax = 8,
+		zmin = 0,
+		unbounded coords = jump,
+		colormap={pos}{color(0cm)=(white); color(6cm)=(orange)}
+		]
+		\addplot3[surf,mark=none, shader=flat, draw=mapped color!80!black] file {source/python/quicksort};
+		
+		\end{loglogaxis}
+	\end{tikzpicture}
+	\caption{Quicksort execution time with a 512 word cache, as a function of block size and associativity}
+\end{figure}
