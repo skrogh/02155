@@ -142,3 +142,9 @@ Quicksort was tested for the same cache parameters as bubblesort. The results ca
 	\caption{Test results for quicksort with a cache size of 512 words.}
 	\label{fig:quickResults}
 \end{figure}
+At first glance these results seem very similar to those obtained for the bubblesort algorithm except for the fact that quicksort is 
+two orders of magnitude faster. Even though there is a significant performance gain when increasing block size, it can be seen that 
+quicksort has less relative performance gain from increased block size than bubblesort, as
+predicted. The large performance gain is the result of having a higher probability of not incurring a cache miss when swapping records
+when the block size is appropriately large. 
+Also, the performance gain from increased associativity is neglible except for block sizes of 32 words or larger.
