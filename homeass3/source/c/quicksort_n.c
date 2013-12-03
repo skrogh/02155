@@ -131,7 +131,7 @@ void bubblesort_var( int *array, int length, int elements ) {
 int main() {
 	// clone records
 	int records_c[ARRAY_LENGTH][RECORD_LENGTH];
-	array_copy( records, records_c );
+	array_copy( records, records_c, ARRAY_LENGTH*RECORD_LENGTH  );
 
 	// do profilling
 	clear_cache();
@@ -142,7 +142,7 @@ int main() {
 	promexit();
 	clear_cache();
 	
-	quicksort_var( records_c, ARRAY_LENGTH, RECORD_LENGTH );
+	bubblesort_var( records_c, ARRAY_LENGTH, RECORD_LENGTH );
 	
 	// check
 	promexit();
