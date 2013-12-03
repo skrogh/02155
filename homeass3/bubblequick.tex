@@ -1,0 +1,75 @@
+\section{Bubblesort and quicksort}
+
+\subsection{Bubblesort}
+The bubblesort algorithm given in the exercise manual contains two bugs. It will not sort the first element of a given list and the 
+outer loop goes out of bounds. The algorithm also needs to be modified to sort both the record keys and values. 
+The fixed code is shown below together with the main function that executes the test.
+\lstinputlisting[language=C, label=bubble1list,caption=Bubblesort test program]{source/c/bubblesort.c}
+Since arrays in C are organized in row-major order, it is expected that the bubblesort algoritm will benefit greatly from increased
+block size in the cache. This is due to the fact that bubblesort, for a record length of seven, compares elements in memory with a 
+stride of 7, and accesses all elements between the first element accessed and \(2*RECORD\_LENGTH\) on a swap. Thus, for the naive
+bubblesort, increasing block size should always improve performance. The bubblesort algorithm shown in the listing above, however, 
+exploits the fact that the largest element will always be correctly placed after the first iteration, the second largest element
+after the second iteration and so forth. This places an upper bound on the effectiveness of increasing block size as unused words
+will be needlessly need to be loaded and replaced in the cache. If associativity is increased, this upper bound should move back
+further since large blocks will be able to coexist in the same set. Thus removing the penalty for accessing only a few 
+elements, that map to the same block, outside of a large block.
+
+\subsubsection{Bubblesort test}
+Testing bubblesorts dependency on cache parameters was done by running the bubblesort test program for all power of two combinationes
+of block sizes 1-64 words and 1-4 blocks per set, as associativity greater than 4 is impractical [~\ref{HandP}]. The total cache size
+was kept constant at 512 words.
+
+\begin{figure}[H]
+	\flushleft
+	\begin{minipage}[c]{0.4\textwidth}
+		\scalebox{0.5}{
+			\begin{tabular}{c | r | r | r }
+				Block size / words & Blocks per set & hit \% & Execution time / ns \\ \hline
+				1& 1& 78& 425391272 \\ \hline
+				1& 2& 78& 413453090 \\ \hline
+				1& 4& 78& 412887614 \\ \hline  
+				2& 1& 88& 235780820 \\ \hline
+				2& 2& 88& 232451104 \\ \hline
+				2& 4& 88& 231967648 \\ \hline
+				4& 1& 92& 140191677 \\ \hline
+				4& 2& 92& 134672553 \\ \hline
+				4& 4& 93& 134200693 \\ \hline
+				8& 1& 94&  99320731 \\ \hline
+				8& 2& 96&  88988171 \\ \hline
+				8& 4& 96&  88561691 \\ \hline
+				16&1& 95&  81937382 \\ \hline
+				16&2& 98&  63179822 \\ \hline
+				16&4& 98&  62679254  \\ \hline
+				32&1& 94& 103627999 \\ \hline
+				32&2& 99&  54189887  \\ \hline
+				32&4& 99&  53796655 \\ \hline
+				64&1& 91& 167612952 \\ \hline
+				64&2& 99&  45967056 \\ \hline
+				64&4& 99&  45382728 \\ \hline
+		\end{tabular} }
+	\end{minipage}
+	\begin{minipage}[c]{0.4\textwidth}
+		\begin{tikzpicture}
+			\begin{loglogaxis}[log basis x=2, log basis y=2, xlabel=Block size / words, ylabel=Blocks per set, zlabel=execution time / ns,
+					xtick={1,2,4,8,16,32,64},
+					ytick={1,2,4},
+					view = {120}{35},% important to draw x,y in increasing order
+					xmin = 0,
+					ymin = 0,
+					xmax = 128,
+					ymax = 8,
+					zmin = 0,
+					unbounded coords = jump,
+					colormap={pos}{color(0cm)=(white); color(6cm)=(orange)}
+				]
+				\addplot3[surf,mark=none, shader=flat, draw=mapped color!80!black] file {source/python/bubblesort};
+
+			\end{loglogaxis}
+		\end{tikzpicture}
+	\end{minipage}
+	\caption{Test results for bubblesort with a cache size of 512 words.}
+	\label{fig:bubbleResults}
+\end{figure}
+
+

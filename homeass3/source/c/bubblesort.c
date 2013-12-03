@@ -1,5 +1,3 @@
-#include <stdlib.h>
-#include <stdio.h>
 #include "records.h"
 
 #define ARRAY_LENGTH 1000
@@ -7,8 +5,8 @@
 
 void bubblesort( int a[][ RECORD_LENGTH ], int N ) {
 	int i,j,t, ti;
-	for( i = N-1; i >= 1; i--) {			//BUG, should be N-1
-		for( j = 1; j <= i; j++ ) {		//BUG, should be j=1
+	for( i = N-1; i >= 1; i--) {			//BUG, should be N-1, not N
+		for( j = 1; j <= i; j++ ) {		//BUG, should be j=1, not j=2
 			if ( a[ j - 1 ][ 0 ] > a[ j ][ 0 ] ) {
 				for ( ti = 0; ti < RECORD_LENGTH; ti++ ) {
 					t = a[ j - 1 ][ ti ];
