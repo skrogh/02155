@@ -82,7 +82,7 @@ because the preceding compare action already brought them in.
 The quicksort algorithm given in the exercise manual does not contain any bugs, but needs to be modified to handle records instead
 of single integers. The modified algorithm is shown below.
 \lstinputlisting[language=C,label=quicksort1list, caption=Quicksort test program]{source/c/quicksort.c}
-For quicksort we do not expect the same dependency on cache parameters as for bubblesort. This is due to quicksort not taking
+For quicksort we do not expect the same dependency on cache parameters as for bubblesort. This is due to quicksort not 
 having the same spatial locality as bubblesort, since quicksort compares elements on opposite sides of a certain point. 
 The recording sorting quicksort will however benefit from increased block size as less cache misses will occur when swapping if
 more elements of a single record are brought into cache when attempting to access the record key for comparison. Associativity is
@@ -147,4 +147,4 @@ two orders of magnitude faster. Even though there is a significant performance g
 quicksort has less relative performance gain from increased block size than bubblesort, as
 predicted. The large performance gain is the result of having a higher probability of not incurring a cache miss when swapping records
 when the block size is appropriately large. 
-Also, the performance gain from increased associativity is neglible except for block sizes of 32 words or larger.
+Also, the performance gain from increased associativity is negligible except for block sizes of 32 words or larger.
