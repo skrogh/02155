@@ -31,8 +31,9 @@ To test the program we run \emph{test.c} it with a cache size of $128$ words
 arranged in blocks of $4$ on $32$ lines.
 
 Running with a directmapped cache we expect the program to cache-trash all over
-the place, and thus we expect a rather low hit rate. In the initalization we hit
-on $\frac{3}{4}$ and miss on $\frac{1}{4}$ of the writes to $A$ - while during
+the place, since variables on same cache line are accessed sub sequently, and
+thus we expect a rather low hit rate.
+In the initalization we hit on $\frac{3}{4}$ and miss on $\frac{1}{4}$ of the writes to $A$ - while during
 the main data manipulation loop we miss on all accesses to $A$. Since this is
 roughly 12 times as many misses - a hit rate in the area of $8\%$ is expected. 
 
@@ -147,12 +148,8 @@ it has to be used again is $\frac{1}{2}^\frac{1920}{64}$).
 Since test2 has to run through the loop twice, for a cache with associativity
 over $1$ test1 is actually faster in these cases.
 
-%
-% SKAL DET HER MED?
-%
-% We can conclude that more ways of assiciativity has a greater possitive impact
-% on execution time, when we acces data elemens further than the cache size
-% away, multiple times (eg. $A[i]$ and $A[i + CACHE\_SIZE] subsequently, but
-% this would be true for multiple elemens a cache size or more away too$)
-%
+We can conclude that more ways of assiciativity has a greater possitive impact
+on execution time, when we acces data elemens further than the cache size
+away, multiple times (eg. $A[i]$ and $A[i + CACHE\_SIZE]$ subsequently, but
+this would be true for multiple elemens a cache size or more away too)
 
