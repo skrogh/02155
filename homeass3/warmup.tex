@@ -42,10 +42,12 @@ explanation.
 \subsubsection{Decompiling} and getting the assembler code, we can examine what
 the compiler has done. In listing \ref{lst:test1ass} we have commented relevant
 lines in the assembler code and noted which data accesses that are most likley
-to be cache hits and misses:
-\lstinputlisting[label={lst:test1ass}]{source/asm/test1.s}
-It is clear that the ``problem'' is that $i$, $j$ and $sum$ are being read and
-written to memory far more often than we access $A$.
+to be cache hits and misses. This is an exerpt with the code being profilled,
+the full source is in the appendix
+\lstinputlisting[label={lst:test1ass},
+firstline=29, lastline=99]{source/asm/test1.s}
+It is clear that the ``problem'' is that $i$,
+$j$ and $sum$ are being read and written to memory far more often than we access $A$.
 Estimating the hit rate from the assembler code we get:
 
 \begin{itemize}
