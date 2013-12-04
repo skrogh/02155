@@ -6,8 +6,14 @@ records from the original array and then restore them in the original array in t
 to be in the same memory location after the sorting, it is possible to reduce the runtime significantly by simply pointing to the newly
 created array. However, we assume that the data must stay sorted in the original location.
 
-The modified code can also handle records of variable length, defined at runtime, but the variable length is managed by \#defines
-in the test code for simplicity. Our test code is shown in listing~\ref{varlist}. 
+
+The modified code can also handle records of variable length, defined at
+runtime, length, and width is suppied as an argument to the function call, 
+for simplicity in the test constans defined by \emph{\#define}s are used for
+simplicity.
+% The modified code can also handle records of variable length, defined at runtime, but the variable length is managed by \#defines
+% in the test code for simplicity.
+Our test code is shown in listing~\ref{varlist}. 
 \subsection{Test results}
 The test of the variable record length versions of quicksort and bubblesort was performed in the same way as the fixed record length ones.
 \subsubsection{Bubblesort}

@@ -1,6 +1,27 @@
 \include{pre}
 \begin{document}
 \input{frontpage}
+
+\begin{abstract}
+This article will try to characterize how cacheparameters effect the sorting
+algorithms \emph{bubblesort} and \emph{quicksort} on a single-cycle
+\emph{MIPS-32} architecture.
+Furtermore we will adapt the algorithms to handle records of variable size
+(length and width) by sorting a list of only the record key and index of this
+key, then arraning the record after these indexes.
+
+Our findings are that both bubblesort and quicksort benifit from a large
+blocksize, but if the blocksize is larger than twice the record width
+(data-elements pr. record) a higher order of associativity is also needed.
+
+The modified bubblesort benefits by a factor of $\sim10$ from the adapted
+algorithm, while quicksort performs a bit slower.
+\end{abstract}
+
+\newpage
+\tableofcontents
+\lstlistoflistings
+\newpage
 \input{introduction}
 \input{warmup}
 \input{bubblequick}
@@ -16,6 +37,11 @@
   Morgan Kaufmann,
   4th Edition revised printing,
   2012.
+\bibitem{StackRegPost}
+  Various,
+  \url{http://stackoverflow.com/questions/15908835/c-c-register-variable}
+  Internet forum,
+  4/12-2013.
 
 \end{thebibliography}
 \end{document}

@@ -10,7 +10,7 @@ stride of 7, and accesses all elements between the first element accessed and \(
 bubblesort, increasing block size should always improve performance. The bubblesort algorithm shown in the listing above, however, 
 exploits the fact that the largest element will always be correctly placed after the first iteration, the second largest element
 after the second iteration and so forth. This places an upper bound on the effectiveness of increasing block size as unused words
-will be needlessly need to be loaded and replaced in the cache. If associativity is increased, this upper bound should move back
+will needlessly be loaded and replaced in the cache. If associativity is increased, this upper bound should move back
 further since large blocks will be able to coexist in the same set. Thus removing the penalty for accessing only a few 
 elements, that map to the same block, outside of a large block.
 

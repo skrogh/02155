@@ -8,15 +8,15 @@ times. In both cases the result is $19200$.
 \begin{lstlisting}
 for ( j = 0; j < 5; j++ ) {
 	sum += A[ i ];
-	sum += A[ i + CACHE\_SIZE ];
+	sum += A[ i + CACHE_SIZE ];
 }
 \end{lstlisting}
 ensuring that, atleast for a direct-mapped cache each access to the elements in
 array $A$ is trashing the cache.
 
 \emph{test2.c} sums first the lower half of the array (from $i=0$ to
-$i=TAB_SIZE-CACHE\_SIZE-1$) six times, then the upper (from $i=CACHE\_SIZE$ to
-$i=TAB_SIZE-1$).
+$i=TAB\_SIZE-CACHE\_SIZE-1$) six times, then the upper (from $i=CACHE\_SIZE$ to
+$i=TAB\_SIZE-1$).
 
 \subsection{Initial remarks}
 For all tests the instruction cache penalty has been turned off, so that this
@@ -27,7 +27,7 @@ In both \emph{test1.c} and \emph{test2.c} the \emph{promexit()} and
 ensures that the initialization of the processor (setting up stack and stuff we
 don't have controll over) doesn't affect the profiling.
 
-To test the program we run \emph{test.c} it with a cache size of $128$ words
+To test the program we run \emph{test1.c} it with a cache size of $128$ words
 arranged in blocks of $4$ on $32$ lines.
 
 Running with a directmapped cache we expect the program to cache-trash all over
@@ -71,8 +71,8 @@ Estimating the hit rate from the assembler code we get:
   \item hit rate can now be calculated as $\frac{\mbox{total
   hits}}{\mbox{total hits}+\mbox{total misses}}$ where $\mbox{total hits} =
   (4+3/4\cdot2048 + (6\cdot8+3)\cdot(2048-128))$ and $\mbox{total misses} =
-  (1/4\cdot2048 + (6\cdot2)\cdot(2048-128))$. This gives a hit rate of $82\%$,
-  not far from the actual hit rate.
+  (1/4\cdot2048 + (6\cdot2)\cdot(2048-128))$. This gives an estimated hit rate
+  of $82\%$, not far from the actual hit rate.
 \end{itemize}
 \subsubsection{A note on \emph{mips.exe}} in the $D-cache$ window of mipset we
 can get the actual total hits, misses, hit rate and execution clocks. These are, and
@@ -87,9 +87,9 @@ that mips forgot some zeroes, we have added those to the numbers in ``()''):
 this tells us that the total hitcount form the \emph{D-cache} window is not
 reliable and cycle count should be taken from the data cache statistics window.
 
-\subsubsection{Solution} digging arround on \emph{Stack Overflow} it turns out
-the keyword \emph{register} tell the compiler to - if possible - store a variable in
-registers. This keyword is put in front of $i$, $j$ and $sum$ as this makes it
+\subsubsection{Solution} digging arround on \emph{Stack Overflow}
+\cite{StackRegPost} it turns out the keyword \emph{register} tell the compiler
+to - if possible - store a variable in registers. This keyword is put in front of $i$, $j$ and $sum$ as this makes it
 possible to show the intended impact of different levels of associativity. With
 the keyword in place we can now run \emph{test1.c} and \emph{test2.c} and give
 meaningfull explanations to why the hit rate is affected as it is. Furthermore
@@ -133,8 +133,8 @@ For test1 we get a low hit rate (and slow execution time) for the directmapped
 cache we have a hit rate of $9\%$. We, however, gain a good speedup, when using
 a two-way associative cache - this allows both $A[i]$ and $A[i + CACHE\_SIZE]$
 to be kept in cache. Inceasing the associativity from here doesn't really do
-much, we already hit on $\frac{10}{12}$ memory accesses. We gain a bit from
-reusing the $x + CACHE\_SIZE$'th element when $i = x + CACHE\_SIZE$ so that an
+much, we already hit on $\frac{10}{12}$ memory accesses in the main loop. We
+gain a bit from reusing the $x + CACHE\_SIZE$'th element when $i = x + CACHE\_SIZE$ so that an
 ealier cached $A[x + CACHE\_SIZE] = A[i]$.
 
 \subsubsection{Conclution based on data in figure~\ref{tab:test}, test2}
@@ -144,14 +144,17 @@ elements that are spaced by the $CACHE\_SIZE$ directly after eachother. For
 higher levels of associativity we gain no increased performance - this is
 because the chance of element $A[i]$ to still be in the cache, when it is needed
 for the second run throug the array is insignificantly small (for a two-way
-associative cache elemet $A[i]$ has a chance of still being in the cache, when
+associative cache the chance of elemet $A[i]$ still being in the cache, when
 it has to be used again is $\frac{1}{2}^\frac{1920}{64}$).
 
 Since test2 has to run through the loop twice, for a cache with associativity
-over $1$ test1 is actually faster in these cases.
+over $1$ test1 is actually faster.
 
 We can conclude that more ways of assiciativity has a greater possitive impact
 on execution time, when we acces data elemens further than the cache size
 away, multiple times (eg. $A[i]$ and $A[i + CACHE\_SIZE]$ subsequently, but
-this would be true for multiple elemens a cache size or more away too)
+this would be true for multiple elemens a cache size or more away too, since it
+is likely that some of them will overlap).
 
+We can also conclude, that the performance of different algorithms for solving
+the same problem is dependant on cache-structure.
