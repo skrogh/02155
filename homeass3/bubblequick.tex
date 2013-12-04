@@ -3,8 +3,7 @@
 \subsection{Bubblesort}
 The bubblesort algorithm given in the exercise manual contains two bugs. It will not sort the first element of a given list and the 
 outer loop goes out of bounds. The algorithm also needs to be modified to sort both the record keys and values. 
-The fixed code is shown below together with the main function that executes the test.
-\lstinputlisting[language=C, label=bubble1list,caption=Bubblesort test program]{source/c/bubblesort.c}
+The fixed code is shown in listing~\ref{bubblesort1list} together with the main function that executes the test.
 Since arrays in C are organized in row-major order, it is expected that the bubblesort algoritm will benefit greatly from increased
 block size in the cache. This is due to the fact that bubblesort, for a record length of seven, compares elements in memory with a 
 stride of 7, and accesses all elements between the first element accessed and \(2*RECORD\_LENGTH\) on a swap. Thus, for the naive
@@ -17,8 +16,8 @@ elements, that map to the same block, outside of a large block.
 
 \subsubsection{Bubblesort test}
 Testing bubblesorts dependency on cache parameters was done by running the bubblesort test program for all power of two combinationes
-of block sizes 1-64 words and 1-4 blocks per set, as associativity greater than 4 is impractical [~\ref{HandP}]. The total cache size
-was kept constant at 512 words.
+of block sizes 1-64 words and 1-4 blocks per set, as associativity greater than 4 barely decreases miss rate \cite[p.~484]{HandP}.
+The total cache size was kept constant at 512 words.
 
 \begin{figure}[H]
 	\flushleft
@@ -80,8 +79,7 @@ because the preceding compare action already brought them in.
 
 \subsection{Quicksort}
 The quicksort algorithm given in the exercise manual does not contain any bugs, but needs to be modified to handle records instead
-of single integers. The modified algorithm is shown below.
-\lstinputlisting[language=C,label=quicksort1list, caption=Quicksort test program]{source/c/quicksort.c}
+of single integers. The modified algorithm is shown in listing~\ref{quicksort1list}.
 For quicksort we do not expect the same dependency on cache parameters as for bubblesort. This is due to quicksort not 
 having the same spatial locality as bubblesort, since quicksort compares elements on opposite sides of a certain point. 
 The record sorting quicksort will however benefit from increased block size as less cache misses will occur when swapping if

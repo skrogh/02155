@@ -128,7 +128,7 @@ significantly lager too.
   \label{tab:test}
 \end{table}
 
-\subsubsection{Conclution based on data in figure \ref{tab:test}, test1}
+\subsubsection{Conclusion based on data in figure~\ref{tab:test}, test1}
 For test1 we get a low hit rate (and slow execution time) for the directmapped
 cache we have a hit rate of $9\%$. We, however, gain a good speedup, when using
 a two-way associative cache - this allows both $A[i]$ and $A[i + CACHE\_SIZE]$
@@ -137,7 +137,7 @@ much, we already hit on $\frac{10}{12}$ memory accesses. We gain a bit from
 reusing the $x + CACHE\_SIZE$'th element when $i = x + CACHE\_SIZE$ so that an
 ealier cached $A[x + CACHE\_SIZE] = A[i]$.
 
-\subsubsection{Conclution based on data in figure \ref{tab:test}, test2}
+\subsubsection{Conclution based on data in figure~\ref{tab:test}, test2}
 Increasing the associativity for test2 has litte to no influence. Test2 performs
 well for a directmapped cache, compared to test1 - as we are not accessing
 elements that are spaced by the $CACHE\_SIZE$ directly after eachother. For

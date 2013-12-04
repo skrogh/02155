@@ -1,0 +1,11 @@
+\section{Conclusion}
+The orignal bubblesort and quicksort algorithms depend heavily upon cache parameters for optimizing execution time. 
+Their respective execution times both reached a minimum value for a directmapped cache when two records could fit in a single block.
+We did not find an upper bound on the effectiveness of increasing block size when the cache also had more ways of associativity. However,
+it was observed that increasing associativity and block size yielded diminishing returns.
+
+The modified algorithms that handle variable length records also tried reducing the execution time by sorting smaller memory chunks.
+This proved immensely effective for bubblesort, reducing the execution time by more than a factor of 10, but failed for quicksort. It 
+was observed that the execution time of the modified quicksort approached the original as the record size increased and so there is 
+reason to believe that it will be faster for very large record sizes. However, it did not
+perform better for record sizes in the interval 3-64 that were specified in the exercise manual.
