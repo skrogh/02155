@@ -3,8 +3,10 @@
 
 #include "records2.h"
 
-#define RECORD_LENGTH 27
+#define RECORD_LENGTH 64
 #define ARRAY_LENGTH 1000
+
+
 
 void print_array( int *array, int length, int elements ) {
 	int i, j;
@@ -129,8 +131,11 @@ void bubblesort_var( int *array, int length, int elements ) {
 }
 
 int main() {
+	int *records_c;
 	// clone records
-	int records_c[ARRAY_LENGTH][RECORD_LENGTH];
+	promexit();
+	
+	records_c = (int*)malloc( sizeof(int)*ARRAY_LENGTH*RECORD_LENGTH );
 	array_copy( records, records_c, ARRAY_LENGTH*RECORD_LENGTH  );
 
 	// do profilling
@@ -147,5 +152,6 @@ int main() {
 	// check
 	promexit();
 	print_array( records_c, ARRAY_LENGTH, RECORD_LENGTH );
+	free( records_c );
 	return 0;
 }
