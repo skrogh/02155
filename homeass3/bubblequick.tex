@@ -82,10 +82,10 @@ because the preceding compare action already brought them in.
 The quicksort algorithm given in the exercise manual does not contain any bugs, but needs to be modified to handle records instead
 of single integers. The modified algorithm is shown below.
 \lstinputlisting[language=C,label=quicksort1list, caption=Quicksort test program]{source/c/quicksort.c}
-For quicksort we do not expect the same dependency on cache parameters as for bubblesort. This is due to quicksort not taking
+For quicksort we do not expect the same dependency on cache parameters as for bubblesort. This is due to quicksort not 
 having the same spatial locality as bubblesort, since quicksort compares elements on opposite sides of a certain point. 
-The recording sorting quicksort will however benefit from increased block size as less cache misses will occur when swapping if
-more elements of a single record are brought into cache when attempting to access the record key for comparison. Associativity is
+The record sorting quicksort will however benefit from increased block size as less cache misses will occur when swapping if
+more elements of a single record are brought into cache, when attempting to access the record key for comparison. Associativity is
 not expected to greatly affect the execution time unless the block size is large. This is again due to the loading/eviction of 
 unnecessary elements.
 
@@ -142,3 +142,9 @@ Quicksort was tested for the same cache parameters as bubblesort. The results ca
 	\caption{Test results for quicksort with a cache size of 512 words.}
 	\label{fig:quickResults}
 \end{figure}
+At first glance these results seem very similar to those obtained for the bubblesort algorithm except for the fact that quicksort is 
+two orders of magnitude faster. Even though there is a significant performance gain when increasing block size, it can be seen that 
+quicksort has less relative performance gain from increased block size than bubblesort, as
+predicted. The large performance gain is the result of having a higher probability of not incurring a cache miss when swapping records
+when the block size is appropriately large. 
+Also, the performance gain from increased associativity is negligible except for block sizes of 32 words or larger.
