@@ -1,0 +1,129 @@
+\section{Handling variable record sizes and optimizing bubblesort and quicksort}
+One apparent problem with the algorithms used in the previous section is the amount of needless swapping taking place, more so
+for bubblesort than quicksort. To solve this problem we have modified the algorithms to start by creating a new array, copying 
+the record keys and their index in the original array. Then this array is sorted according to keys and the index is used to copy 
+records from the original array and then restore them in the original array in the correct positions. If the sorted data does not have
+to be in the same memory location after the sorting, it is possible to reduce the runtime significantly by simply pointing to the newly
+created array. However, we assume that the data must stay sorted in the original location.
+
+The modified code can also handle records of variable length, defined at runtime, but the variable length is managed by \#defines
+in the test code for simplicity. Our test code is shown below
+\lstinputlisting[language=C, caption=Test code for the variable record length versions of quicksort and bubblesort]{source/c/quicksort_n.c}
+\subsection{Test results}
+The test of the variable record length versions of quicksort and bubblesort was performed in the same way as the fixed record length ones.
+\subsubsection{Bubblesort}
+The test results for the variable record length bubblesort can be seen in figure (~\ref{fig:bubbleVarResults})
+\begin{figure}[H]
+	\flushleft
+	\begin{minipage}[c]{0.4\textwidth}
+		\scalebox{0.5}{
+			\begin{tabular}{c | r | r | r }
+				Block size / words & Blocks per set & hit \% & Execution time / ns \\ \hline
+				1& 1& 55& 29344780 \\ \hline
+				1& 2& 57& 28348585 \\ \hline
+				1& 4& 57& 27946935 \\ \hline  
+				2& 1& 58& 29083395 \\ \hline
+				2& 2& 59& 28045527 \\ \hline
+				2& 4& 59& 27629527 \\ \hline
+				4& 1& 78& 17146977 \\ \hline
+				4& 2& 78& 16626613 \\ \hline
+				4& 4& 79& 16419809 \\ \hline
+				8& 1& 89& 11638889 \\ \hline
+				8& 2& 89& 11354073 \\ \hline
+				8& 4& 90& 11239161 \\ \hline
+				16&1& 95& 8873675 \\ \hline
+				16&2& 95& 8706443 \\ \hline
+				16&4& 95& 8643555  \\ \hline
+				32&1& 97& 7988865 \\ \hline
+				32&2& 97& 7842091  \\ \hline
+				32&4& 97& 7791009 \\ \hline
+				64&1& 99& 7140151\\ \hline
+				64&2& 99& 7005623 \\ \hline
+				64&4& 99& 6953655 \\ \hline
+		\end{tabular} }
+	\end{minipage}
+	\begin{minipage}[c]{0.4\textwidth}
+		\begin{tikzpicture}
+			\begin{loglogaxis}[log basis x=2, log basis y=2, xlabel=Block size / words, ylabel=Blocks per set, zlabel=execution time / ns,
+					xtick={1,2,4,8,16,32,64},
+					ytick={1,2,4},
+					view = {120}{35},% important to draw x,y in increasing order
+					xmin = 0,
+					ymin = 0,
+					xmax = 128,
+					ymax = 8,
+					zmin = 0,
+					unbounded coords = jump,
+					colormap={pos}{color(0cm)=(white); color(6cm)=(orange)}
+				]
+				\addplot3[surf,mark=none, shader=flat, draw=mapped color!80!black] file {source/python/bubblesort_n.dat};
+
+			\end{loglogaxis}
+		\end{tikzpicture}
+	\end{minipage}
+	\caption{Test results for variable record length bubblesort with a cache size of 512 words.}
+	\label{fig:bubbleVarResults}
+\end{figure}
+From the test results we can conclude that the modified bubblesort is much faster than the original by approximately a factor of 10.
+The hit rate is much lower than the original bubblesort for small block sizes. This is a result of the large amount of copying taking
+place when the algorithm is about to complete. The actual sorting part of the algorithm has a hit rate in the 90th percentile. It 
+can also be seen that there is no significant difference in execution time for block sizes 1 and 2. This is because the array being
+sorted always accesses memory with a stride of 2 when comparing. Thus a miss will always happen on comparison for these block sizes.
+Furthermore we note that the associativity level does not affect the execution time like it did for the original bubblesort. 
+This is due to the nature of bubblesort. Since the algorithm always compares elements that are next to each other, eviction of 
+elements that will be needed in the near future is very rare. The original bubblesort showed a performance gain from increased 
+associativity for large block sizes which can be explained by the higher probability that an element in the record would cross a
+block boundary and thus initiate an entire block transfer, since the entire record was swapped.
+
+\subsubsection{Quicksort}
+\begin{figure}[H]
+	\flushleft
+	\begin{minipage}[c]{0.4\textwidth}
+		\scalebox{0.5}{
+			\begin{tabular}{c | r | r | r }
+				Block size / words & Blocks per set & hit \% & Execution time / ns \\ \hline
+				1& 1& 55& 29344780 \\ \hline
+				1& 2& 57& 28348585 \\ \hline
+				1& 4& 57& 27946935 \\ \hline  
+				2& 1& 58& 29083395 \\ \hline
+				2& 2& 59& 28045527 \\ \hline
+				2& 4& 59& 27629527 \\ \hline
+				4& 1& 78& 17146977 \\ \hline
+				4& 2& 78& 16626613 \\ \hline
+				4& 4& 79& 16419809 \\ \hline
+				8& 1& 89& 11638889 \\ \hline
+				8& 2& 89& 11354073 \\ \hline
+				8& 4& 90& 11239161 \\ \hline
+				16&1& 95& 8873675 \\ \hline
+				16&2& 95& 8706443 \\ \hline
+				16&4& 95& 8643555  \\ \hline
+				32&1& 97& 7988865 \\ \hline
+				32&2& 97& 7842091  \\ \hline
+				32&4& 97& 7791009 \\ \hline
+				64&1& 99& 7140151\\ \hline
+				64&2& 99& 7005623 \\ \hline
+				64&4& 99& 6953655 \\ \hline
+		\end{tabular} }
+	\end{minipage}
+	\begin{minipage}[c]{0.4\textwidth}
+		\begin{tikzpicture}
+			\begin{loglogaxis}[log basis x=2, log basis y=2, xlabel=Block size / words, ylabel=Blocks per set, zlabel=execution time / ns,
+					xtick={1,2,4,8,16,32,64},
+					ytick={1,2,4},
+					view = {120}{35},% important to draw x,y in increasing order
+					xmin = 0,
+					ymin = 0,
+					xmax = 128,
+					ymax = 8,
+					zmin = 0,
+					unbounded coords = jump,
+					colormap={pos}{color(0cm)=(white); color(6cm)=(orange)}
+				]
+				\addplot3[surf,mark=none, shader=flat, draw=mapped color!80!black] file {source/python/quicksort_n.dat};
+
+			\end{loglogaxis}
+		\end{tikzpicture}
+	\end{minipage}
+	\caption{Test results for variable record length quick with a cache size of 512 words.}
+	\label{fig:quickVarResults}
+\end{figure}

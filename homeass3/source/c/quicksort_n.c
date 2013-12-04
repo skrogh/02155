@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "records.h"
+#include "records2.h"
 
-#define RECORD_LENGTH 7
+#define RECORD_LENGTH 27
 #define ARRAY_LENGTH 1000
 
 void print_array( int *array, int length, int elements ) {
