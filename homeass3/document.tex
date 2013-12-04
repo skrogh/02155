@@ -3,20 +3,28 @@
 \input{frontpage}
 
 \begin{abstract}
-This article will try to characterize how cacheparameters effect the sorting
+This report will try to characterize how cacheparameters effect the sorting
 algorithms \emph{bubblesort} and \emph{quicksort} on a single-cycle
 \emph{MIPS-32} architecture.
 Furtermore we will adapt the algorithms to handle records of variable size
 (length and width) by sorting a list of only the record key and index of this
 key, then arraning the record after these indexes.
 
-Our findings are that both bubblesort and quicksort benifit from a large
+Our findings are that both bubblesort and quicksort benefit from a large
 blocksize, but if the blocksize is larger than twice the record width
-(data-elements pr. record) a higher order of associativity is also needed.
+(data-elements pr.\ record) a higher order of associativity is also needed.
 
 The modified bubblesort benefits by a factor of $\sim10$ from the adapted
 algorithm, while quicksort performs a bit slower.
 \end{abstract}
+
+\vspace{5cm}
+Work Distribution
+\begin{itemize}
+	 \item Unoptimized Bubblesort and quicksort experiments: Carsten
+	 \item Unoptimized Bubblesort and quicksort analysis: Carsten
+	\item Modified bubblesort and quicksort analysis: Carsten
+\end{itemize}
 
 \newpage
 \tableofcontents

@@ -3,7 +3,7 @@
 \subsection{Bubblesort}
 The bubblesort algorithm given in the exercise manual contains two bugs. It will not sort the first element of a given list and the 
 outer loop goes out of bounds. The algorithm also needs to be modified to sort both the record keys and values. 
-The fixed code is shown in listing~\ref{bubblesort1list} together with the main function that executes the test.
+The fixed code is shown in listing~\ref{bubble1list} together with the main function that executes the test.
 Since arrays in C are organized in row-major order, it is expected that the bubblesort algoritm will benefit greatly from increased
 block size in the cache. This is due to the fact that bubblesort, for a record length of seven, compares elements in memory with a 
 stride of 7, and accesses all elements between the first element accessed and \(2*RECORD\_LENGTH\) on a swap. Thus, for the naive
