@@ -104,7 +104,10 @@ void quicksort_var( int *array, int length, int elements ) {
 	
 	init_n( helper, records, length, elements );
 	
+	clear_cache();
 	quicksort_n( helper, 0, length );
+	promexit();
+	
 	arrange_n( helper, records, sorted, length, elements );
 	
 	array_copy( sorted, array, length*elements );
