@@ -1,6 +1,6 @@
 #include "records2.h"
 
-#define RECORD_LENGTH 27
+#define RECORD_LENGTH 64
 #define ARRAY_LENGTH 1000
 
 void quicksort( int a[][ RECORD_LENGTH ], int l, int r ) {
