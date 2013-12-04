@@ -1,24 +1,12 @@
-#include "records2.h"
+#include "records.h"
 
-#define RECORD_LENGTH 64
+#define RECORD_LENGTH 7 
 #define ARRAY_LENGTH 1000
 
 void quicksort( int a[][ RECORD_LENGTH ], int l, int r ) {
 	int v, i, j, t, ti;
-	int length = r - l + 1;
-	if ( length < 5 ) {
-		for ( i = 0; i < length; i++ ) {
-			j = i;
-			while ( j > 0 && a[ j + l - 1 ][ 0 ] > a[ j + l ][ 0 ] ) {
-				for ( ti = 0; ti < RECORD_LENGTH; ti++ ) {
-					t = a[ j + l ][ ti ];
-					a[ j + l ][ ti ] = a[ j + l - 1 ][ ti ];
-					a[ j + l - 1 ][ ti ] = t;
-				}
-				j--;
-			}
-		}
-	} else if ( r > l ) {
+
+	if ( r > l ) {
 		v = a[ r ][ 0 ];
 		i = l - 1;
 		j = r;
